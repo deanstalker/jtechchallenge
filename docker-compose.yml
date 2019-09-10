@@ -1,0 +1,66 @@
+version: '3.3'
+
+services:
+  consul:
+    command: -server -bootstrap -rejoin
+    image: progrium/consul:latest
+    ports:
+      - "8300:8300"
+      - "8400:8400"
+      - "8500:8500"
+      - "8600:53/udp"
+  micro:
+    command: --registry_address=consul:8500 api --handler=rpc
+    image: microhq/micro:latest
+    links:
+      - consul
+      - api
+    ports:
+      - "8080:8080"
+  api:
+    build: ./api/petstore
+    command: --registry_address=consul:8500
+    links:
+      - consul
+      - user
+      - store
+      - pet
+  user:
+    build: ./srv/user
+    command: --registry_address=consul:8500
+      DB: 'user'
+    links:
+      - consul
+      - db
+  store:
+    build: ./srv/store
+    command: --registry_address=consul:8500
+    environment:
+      DB: 'store'
+    links:
+      - consul
+      - db
+  pet:
+    build: ./srv/pet
+    command: --registry_address=consul:8500
+    environment:
+      DB: 'pets'
+    links:
+      - consul
+      - db
+
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'kl3pt0man1a'
+      MYSQL_ROOT_PASSWORD: 'w31lh3313d'
+    ports:
+      - '3308:3306'
+    expose:
+      - '3308'
+    volumes:
+      - petstore:/var/lib/mysql
+volumes:
+  petstore:

@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package store;
+
+service Order {
+    rpc Inventory(InventoryRequest) returns (InventoryResponse) {}
+    rpc Place(PlaceRequest) returns (PlaceResponse) {}
+    rpc Get(GetRequest) returns (GetResponse) {}
+    rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+}
+
+message InventoryRequest {
+    // empty
+}
+
+message InventoryResponse {
+    map<string, int64> inventory = 1;
+}
+
+message PlaceRequest {
+    int64 id = 1;
+    int64 pet_id = 2;
+    int64 quantity = 3;
+    string ship_date = 4;
+    string status = 5;
+    bool complete = 6;
+}
+
+message PlaceResponse {
+    int64 id = 1;
+    int64 pet_id = 2;
+    int64 quantity = 3;
+    string ship_date = 4;
+    string status = 5;
+    bool complete = 6;
+}
+
+message GetRequest {
+    int64 id = 1;
+}
+
+message GetResponse {
+    int64 id = 1;
+    int64 pet_id = 2;
+    int64 quantity = 3;
+    string ship_date = 4;
+    string status = 5;
+    bool complete = 6;
+}
+
+message DeleteRequest {
+    int64 id = 1;
+}
+
+message DeleteResponse {
+    // empty
+}

@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package pet;
+
+service Pet {
+    rpc Add(AddRequest) returns (AddResponse) {}
+    rpc Update(UpdateRequest) returns (UpdateResponse) {}
+    rpc ByStatus(ByStatusRequest) returns (ByStatusResponse) {}
+    rpc ByID(ByIDRequest) returns (ByIDResponse) {}
+    rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+    rpc UploadImage(UploadImageRequest) returns(UploadImageResponse) {}
+}
+
+message AddRequest {
+    int64 id = 1;
+    string name = 2;
+    string status = 3;
+    Category category = 4;
+    repeated Tag tags = 5;
+    repeated PhotoURL photo_urls = 6;
+}
+
+message AddResponse {
+    // empty
+}
+
+message UpdateRequest {
+    int64 id = 1;
+    string name = 2;
+    string status = 3;
+    Category category = 4;
+    repeated Tag tags = 5;
+    repeated PhotoURL photo_urls = 6;
+}
+
+message UpdateResponse {
+    // empty
+}
+
+message ByStatusRequest {
+    string status = 1;
+}
+
+message ByStatusResponse {
+    repeated Pet pets = 1;
+}
+
+message ByIDRequest {
+    int64 id = 1;
+}
+
+message ByIDResponse {
+    int64 id = 1;
+    string name = 2;
+    string status = 3;
+    Category category = 4;
+    repeated Tag tags = 5;
+    repeated PhotoURL photo_urls = 6;
+}
+
+message DeleteRequest {
+    int64 id = 1;
+}
+
+message DeleteResponse {
+    // empty
+}
+
+message UploadImageRequest {
+    bytes image = 1;
+}
+
+message UploadImageResponse {
+    string url = 1;
+}
+
+message Pet {
+    int64 id = 1;
+    string name = 2;
+    string status = 3;
+    Category category = 4;
+    repeated Tag tags = 5;
+    repeated PhotoURL photo_urls = 6;
+}
+
+message Category {
+    int64 id = 1;
+    string name = 2;
+}
+
+message Tag {
+    int64 id = 1;
+    string name = 2;
+}
+
+message PhotoURL {
+    int64 id = 1;
+    string caption = 2;
+    string url = 3;
+    string filename = 4;
+}
