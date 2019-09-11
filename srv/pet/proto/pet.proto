@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package pet;
 
-service Pet {
+service PetService {
     rpc Add(AddRequest) returns (AddResponse) {}
     rpc Update(UpdateRequest) returns (UpdateResponse) {}
     rpc ByStatus(ByStatusRequest) returns (ByStatusResponse) {}
