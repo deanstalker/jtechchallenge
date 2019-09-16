@@ -34,12 +34,11 @@ var _ server.Option
 // Client API for User service
 
 type UserService interface {
-	Create(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserResponse, error)
-	Login(ctx context.Context, in *LoginRequest, opts ...client.CallOption) (*LoginResponse, error)
-	Logout(ctx context.Context, in *LogoutRequest, opts ...client.CallOption) (*LogoutResponse, error)
+	Create(ctx context.Context, in *CreateRequest, opts ...client.CallOption) (*CreateResponse, error)
 	Get(ctx context.Context, in *GetRequest, opts ...client.CallOption) (*GetResponse, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...client.CallOption) (*UpdateResponse, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...client.CallOption) (*DeleteResponse, error)
+	BatchCreate(ctx context.Context, in *BatchCreateRequest, opts ...client.CallOption) (*BatchCreateResponse, error)
 }
 
 type userService struct {
@@ -60,29 +59,9 @@ func NewUserService(name string, c client.Client) UserService {
 	}
 }
 
-func (c *userService) Create(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserResponse, error) {
+func (c *userService) Create(ctx context.Context, in *CreateRequest, opts ...client.CallOption) (*CreateResponse, error) {
 	req := c.c.NewRequest(c.name, "User.Create", in)
-	out := new(UserResponse)
-	err := c.c.Call(ctx, req, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *userService) Login(ctx context.Context, in *LoginRequest, opts ...client.CallOption) (*LoginResponse, error) {
-	req := c.c.NewRequest(c.name, "User.Login", in)
-	out := new(LoginResponse)
-	err := c.c.Call(ctx, req, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *userService) Logout(ctx context.Context, in *LogoutRequest, opts ...client.CallOption) (*LogoutResponse, error) {
-	req := c.c.NewRequest(c.name, "User.Logout", in)
-	out := new(LogoutResponse)
+	out := new(CreateResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -120,25 +99,33 @@ func (c *userService) Delete(ctx context.Context, in *DeleteRequest, opts ...cli
 	return out, nil
 }
 
+func (c *userService) BatchCreate(ctx context.Context, in *BatchCreateRequest, opts ...client.CallOption) (*BatchCreateResponse, error) {
+	req := c.c.NewRequest(c.name, "User.BatchCreate", in)
+	out := new(BatchCreateResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for User service
 
 type UserHandler interface {
-	Create(context.Context, *UserRequest, *UserResponse) error
-	Login(context.Context, *LoginRequest, *LoginResponse) error
-	Logout(context.Context, *LogoutRequest, *LogoutResponse) error
+	Create(context.Context, *CreateRequest, *CreateResponse) error
 	Get(context.Context, *GetRequest, *GetResponse) error
 	Update(context.Context, *UpdateRequest, *UpdateResponse) error
 	Delete(context.Context, *DeleteRequest, *DeleteResponse) error
+	BatchCreate(context.Context, *BatchCreateRequest, *BatchCreateResponse) error
 }
 
 func RegisterUserHandler(s server.Server, hdlr UserHandler, opts ...server.HandlerOption) error {
 	type user interface {
-		Create(ctx context.Context, in *UserRequest, out *UserResponse) error
-		Login(ctx context.Context, in *LoginRequest, out *LoginResponse) error
-		Logout(ctx context.Context, in *LogoutRequest, out *LogoutResponse) error
+		Create(ctx context.Context, in *CreateRequest, out *CreateResponse) error
 		Get(ctx context.Context, in *GetRequest, out *GetResponse) error
 		Update(ctx context.Context, in *UpdateRequest, out *UpdateResponse) error
 		Delete(ctx context.Context, in *DeleteRequest, out *DeleteResponse) error
+		BatchCreate(ctx context.Context, in *BatchCreateRequest, out *BatchCreateResponse) error
 	}
 	type User struct {
 		user
@@ -151,16 +138,8 @@ type userHandler struct {
 	UserHandler
 }
 
-func (h *userHandler) Create(ctx context.Context, in *UserRequest, out *UserResponse) error {
+func (h *userHandler) Create(ctx context.Context, in *CreateRequest, out *CreateResponse) error {
 	return h.UserHandler.Create(ctx, in, out)
-}
-
-func (h *userHandler) Login(ctx context.Context, in *LoginRequest, out *LoginResponse) error {
-	return h.UserHandler.Login(ctx, in, out)
-}
-
-func (h *userHandler) Logout(ctx context.Context, in *LogoutRequest, out *LogoutResponse) error {
-	return h.UserHandler.Logout(ctx, in, out)
 }
 
 func (h *userHandler) Get(ctx context.Context, in *GetRequest, out *GetResponse) error {
@@ -173,4 +152,8 @@ func (h *userHandler) Update(ctx context.Context, in *UpdateRequest, out *Update
 
 func (h *userHandler) Delete(ctx context.Context, in *DeleteRequest, out *DeleteResponse) error {
 	return h.UserHandler.Delete(ctx, in, out)
+}
+
+func (h *userHandler) BatchCreate(ctx context.Context, in *BatchCreateRequest, out *BatchCreateResponse) error {
+	return h.UserHandler.BatchCreate(ctx, in, out)
 }

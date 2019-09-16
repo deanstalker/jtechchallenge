@@ -18,21 +18,11 @@ message InventoryResponse {
 }
 
 message PlaceRequest {
-    int64 id = 1;
-    int64 pet_id = 2;
-    int64 quantity = 3;
-    string ship_date = 4;
-    string status = 5;
-    bool complete = 6;
+    OrderItem order = 1;
 }
 
 message PlaceResponse {
-    int64 id = 1;
-    int64 pet_id = 2;
-    int64 quantity = 3;
-    string ship_date = 4;
-    string status = 5;
-    bool complete = 6;
+    OrderItem order = 1;
 }
 
 message GetRequest {
@@ -40,12 +30,7 @@ message GetRequest {
 }
 
 message GetResponse {
-    int64 id = 1;
-    int64 pet_id = 2;
-    int64 quantity = 3;
-    string ship_date = 4;
-    string status = 5;
-    bool complete = 6;
+    OrderItem order = 1;
 }
 
 message DeleteRequest {
@@ -54,4 +39,13 @@ message DeleteRequest {
 
 message DeleteResponse {
     // empty
+}
+
+message OrderItem {
+    int64 id = 1;
+    int64 pet_id = 2;
+    int64 quantity = 3;
+    string ship_date = 4;
+    string status = 5;
+    bool complete = 6;
 }

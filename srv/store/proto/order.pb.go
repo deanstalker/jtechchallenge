@@ -17,6 +17,7 @@ It has these top-level messages:
 	GetResponse
 	DeleteRequest
 	DeleteResponse
+	OrderItem
 */
 package store
 
@@ -48,30 +49,34 @@ func (m *InventoryResponse) GetInventory() map[string]int64 {
 }
 
 type PlaceRequest struct {
-	Id       int64  `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
-	PetId    int64  `protobuf:"varint,2,opt,name=pet_id" json:"pet_id,omitempty"`
-	Quantity int64  `protobuf:"varint,3,opt,name=quantity" json:"quantity,omitempty"`
-	ShipDate string `protobuf:"bytes,4,opt,name=ship_date" json:"ship_date,omitempty"`
-	Status   string `protobuf:"bytes,5,opt,name=status" json:"status,omitempty"`
-	Complete bool   `protobuf:"varint,6,opt,name=complete" json:"complete,omitempty"`
+	Order *OrderItem `protobuf:"bytes,1,opt,name=order" json:"order,omitempty"`
 }
 
 func (m *PlaceRequest) Reset()         { *m = PlaceRequest{} }
 func (m *PlaceRequest) String() string { return proto.CompactTextString(m) }
 func (*PlaceRequest) ProtoMessage()    {}
 
+func (m *PlaceRequest) GetOrder() *OrderItem {
+	if m != nil {
+		return m.Order
+	}
+	return nil
+}
+
 type PlaceResponse struct {
-	Id       int64  `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
-	PetId    int64  `protobuf:"varint,2,opt,name=pet_id" json:"pet_id,omitempty"`
-	Quantity int64  `protobuf:"varint,3,opt,name=quantity" json:"quantity,omitempty"`
-	ShipDate string `protobuf:"bytes,4,opt,name=ship_date" json:"ship_date,omitempty"`
-	Status   string `protobuf:"bytes,5,opt,name=status" json:"status,omitempty"`
-	Complete bool   `protobuf:"varint,6,opt,name=complete" json:"complete,omitempty"`
+	Order *OrderItem `protobuf:"bytes,1,opt,name=order" json:"order,omitempty"`
 }
 
 func (m *PlaceResponse) Reset()         { *m = PlaceResponse{} }
 func (m *PlaceResponse) String() string { return proto.CompactTextString(m) }
 func (*PlaceResponse) ProtoMessage()    {}
+
+func (m *PlaceResponse) GetOrder() *OrderItem {
+	if m != nil {
+		return m.Order
+	}
+	return nil
+}
 
 type GetRequest struct {
 	Id int64 `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
@@ -82,17 +87,19 @@ func (m *GetRequest) String() string { return proto.CompactTextString(m) }
 func (*GetRequest) ProtoMessage()    {}
 
 type GetResponse struct {
-	Id       int64  `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
-	PetId    int64  `protobuf:"varint,2,opt,name=pet_id" json:"pet_id,omitempty"`
-	Quantity int64  `protobuf:"varint,3,opt,name=quantity" json:"quantity,omitempty"`
-	ShipDate string `protobuf:"bytes,4,opt,name=ship_date" json:"ship_date,omitempty"`
-	Status   string `protobuf:"bytes,5,opt,name=status" json:"status,omitempty"`
-	Complete bool   `protobuf:"varint,6,opt,name=complete" json:"complete,omitempty"`
+	Order *OrderItem `protobuf:"bytes,1,opt,name=order" json:"order,omitempty"`
 }
 
 func (m *GetResponse) Reset()         { *m = GetResponse{} }
 func (m *GetResponse) String() string { return proto.CompactTextString(m) }
 func (*GetResponse) ProtoMessage()    {}
+
+func (m *GetResponse) GetOrder() *OrderItem {
+	if m != nil {
+		return m.Order
+	}
+	return nil
+}
 
 type DeleteRequest struct {
 	Id int64 `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
@@ -108,6 +115,19 @@ type DeleteResponse struct {
 func (m *DeleteResponse) Reset()         { *m = DeleteResponse{} }
 func (m *DeleteResponse) String() string { return proto.CompactTextString(m) }
 func (*DeleteResponse) ProtoMessage()    {}
+
+type OrderItem struct {
+	Id       int64  `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
+	PetId    int64  `protobuf:"varint,2,opt,name=pet_id" json:"pet_id,omitempty"`
+	Quantity int64  `protobuf:"varint,3,opt,name=quantity" json:"quantity,omitempty"`
+	ShipDate string `protobuf:"bytes,4,opt,name=ship_date" json:"ship_date,omitempty"`
+	Status   string `protobuf:"bytes,5,opt,name=status" json:"status,omitempty"`
+	Complete bool   `protobuf:"varint,6,opt,name=complete" json:"complete,omitempty"`
+}
+
+func (m *OrderItem) Reset()         { *m = OrderItem{} }
+func (m *OrderItem) String() string { return proto.CompactTextString(m) }
+func (*OrderItem) ProtoMessage()    {}
 
 func init() {
 }

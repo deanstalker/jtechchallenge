@@ -5,15 +5,17 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/deanstalker/jtechchallenge/srv/pet/proto"
-	_ "github.com/go-sql-driver/mysq"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/micro/go-micro"
+
+	petdb "github.com/deanstalker/jtechchallenge/srv/pet/db"
+	pet "github.com/deanstalker/jtechchallenge/srv/pet/proto"
 	log "github.com/sirupsen/logrus"
 )
 
 const (
-	QualifiedName = "go.micro.srv.pet"
 	Name          = "pet"
+	QualifiedName = "go.micro.srv." + Name
 )
 
 func init() {
@@ -29,12 +31,23 @@ func main() {
 
 	service.Init()
 
-	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@%s:%s/%s", "user", os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_NAME")))
+	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_NAME")))
 	if err != nil {
-		log.Fatal("Unable to connect to database", err)
+		log.WithError(err).Warn("Unable to open handle to database")
+	}
+	defer db.Close()
+
+	if err = db.Ping(); err != nil {
+		log.WithError(err).Fatal("Unable to contact database")
 	}
 
-	if err := pet.RegisterPetServiceHandler(service.Server(), NewPetHandler(db, log.WithField("service", QualifiedName))); err != nil {
+	repo := petdb.NewPetRepo(db)
+
+	if err := pet.RegisterPetServiceHandler(service.Server(), NewPetHandler(log.WithField("service", QualifiedName), repo)); err != nil {
 		log.WithError(err).Fatal("Service unable to accept connections")
+	}
+
+	if err := service.Run(); err != nil {
+		log.Fatal(err.Error())
 	}
 }

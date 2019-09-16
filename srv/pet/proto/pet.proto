@@ -12,12 +12,7 @@ service PetService {
 }
 
 message AddRequest {
-    int64 id = 1;
-    string name = 2;
-    string status = 3;
-    Category category = 4;
-    repeated Tag tags = 5;
-    repeated PhotoURL photo_urls = 6;
+    Pet pet = 1;
 }
 
 message AddResponse {
@@ -25,12 +20,7 @@ message AddResponse {
 }
 
 message UpdateRequest {
-    int64 id = 1;
-    string name = 2;
-    string status = 3;
-    Category category = 4;
-    repeated Tag tags = 5;
-    repeated PhotoURL photo_urls = 6;
+    Pet pet = 1;
 }
 
 message UpdateResponse {
@@ -50,12 +40,7 @@ message ByIDRequest {
 }
 
 message ByIDResponse {
-    int64 id = 1;
-    string name = 2;
-    string status = 3;
-    Category category = 4;
-    repeated Tag tags = 5;
-    repeated PhotoURL photo_urls = 6;
+    Pet pet = 1;
 }
 
 message DeleteRequest {

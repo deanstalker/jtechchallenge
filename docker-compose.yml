@@ -20,6 +20,8 @@ services:
   api:
     build: ./api/petstore
     command: --registry_address=consul:8500
+    environment:
+      SECRET: 'purple monkey dishwasher'
     links:
       - consul
       - user
@@ -28,7 +30,12 @@ services:
   user:
     build: ./srv/user
     command: --registry_address=consul:8500
-      DB: 'user'
+    environment:
+      DB_USER: 'user'
+      DB_PASSWORD: 'kl3pt0man1a'
+      DB_HOST: 'mysql'
+      DB_PORT: '3308'
+      DB_NAME: 'user'
     links:
       - consul
       - db
@@ -36,7 +43,11 @@ services:
     build: ./srv/store
     command: --registry_address=consul:8500
     environment:
-      DB: 'store'
+      DB_USER: 'user'
+      DB_PASSWORD: 'kl3pt0man1a'
+      DB_HOST: 'mysql'
+      DB_PORT: '3308'
+      DB_NAME: 'store'
     links:
       - consul
       - db
@@ -44,7 +55,11 @@ services:
     build: ./srv/pet
     command: --registry_address=consul:8500
     environment:
-      DB: 'pets'
+        DB_USER: 'user'
+        DB_PASSWORD: 'kl3pt0man1a'
+        DB_HOST: 'mysql'
+        DB_PORT: '3308'
+        DB_NAME: 'pets'
     links:
       - consul
       - db

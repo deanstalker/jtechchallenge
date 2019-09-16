@@ -3,9 +3,10 @@
 -- Model: New Model    Version: 1.0
 -- MySQL Workbench Forward Engineering
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0;
+SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0;
+SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE =
+        'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
 -- Schema pet
@@ -14,7 +15,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema pet
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `pet` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+CREATE SCHEMA IF NOT EXISTS `pet` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Schema store
 -- -----------------------------------------------------
@@ -22,7 +23,7 @@ CREATE SCHEMA IF NOT EXISTS `pet` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_
 -- -----------------------------------------------------
 -- Schema store
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `store` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+CREATE SCHEMA IF NOT EXISTS `store` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Schema user
 -- -----------------------------------------------------
@@ -30,120 +31,233 @@ CREATE SCHEMA IF NOT EXISTS `store` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb
 -- -----------------------------------------------------
 -- Schema user
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `user` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
-USE `pet` ;
+CREATE SCHEMA IF NOT EXISTS `user` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `pet`;
 
 -- -----------------------------------------------------
 -- Table `pet`.`categories`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pet`.`categories` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(128) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `categories_id_uindex` (`id` ASC) VISIBLE,
-  INDEX `categories_name_index` (`name` ASC) VISIBLE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS `pet`.`categories`
+(
+    `id`   INT(11)      NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(128) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `categories_id_uindex` (`id` ASC) VISIBLE,
+    INDEX `categories_name_index` (`name` ASC) VISIBLE
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
 -- Table `pet`.`pet_tags`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pet`.`pet_tags` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `petId` INT(11) NOT NULL,
-  `tagId` INT(11) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS `pet`.`pet_tags`
+(
+    `id`    INT(11) NOT NULL AUTO_INCREMENT,
+    `petId` INT(11) NOT NULL,
+    `tagId` INT(11) NOT NULL,
+    PRIMARY KEY (`id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
 -- Table `pet`.`pets`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pet`.`pets` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `categoryId` INT(11) NOT NULL,
-  `status` VARCHAR(128) NOT NULL DEFAULT 'pending',
-  `name` VARCHAR(128) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `pets_id_index` (`id` ASC) VISIBLE,
-  INDEX `pets_name_index` (`name` ASC) VISIBLE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS `pet`.`pets`
+(
+    `id`         INT(11)      NOT NULL AUTO_INCREMENT,
+    `categoryId` INT(11)      NOT NULL,
+    `status`     VARCHAR(128) NOT NULL DEFAULT 'pending',
+    `name`       VARCHAR(128) NULL     DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `pets_id_index` (`id` ASC) VISIBLE,
+    INDEX `pets_name_index` (`name` ASC) VISIBLE
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
 -- Table `pet`.`photos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pet`.`photos` (
-  `id` INT(11) NULL DEFAULT NULL,
-  `petId` INT(11) NULL DEFAULT NULL,
-  `url` VARCHAR(255) NULL DEFAULT NULL,
-  `filename` VARCHAR(255) NULL DEFAULT NULL)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS `pet`.`photos`
+(
+    `id`       INT(11)      NULL DEFAULT NULL,
+    `petId`    INT(11)      NULL DEFAULT NULL,
+    `url`      VARCHAR(255) NULL DEFAULT NULL,
+    `filename` VARCHAR(255) NULL DEFAULT NULL
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
 -- Table `pet`.`tags`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `pet`.`tags` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(128) NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `tags_id_index` (`id` ASC) VISIBLE,
-  INDEX `tags_name_index` (`name` ASC) VISIBLE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS `pet`.`tags`
+(
+    `id`   INT(11)      NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(128) NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `tags_id_index` (`id` ASC) VISIBLE,
+    INDEX `tags_name_index` (`name` ASC) VISIBLE
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
-USE `store` ;
+USE `store`;
 
 -- -----------------------------------------------------
 -- Table `store`.`order`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `store`.`order` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `petId` INT(11) NULL DEFAULT NULL,
-  `quantity` INT(11) NULL DEFAULT '0',
-  `shipDate` DATETIME NULL DEFAULT NULL,
-  `status` VARCHAR(64) NULL DEFAULT NULL,
-  `complete` TINYINT(1) NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  INDEX `order_id_index` (`id` ASC) VISIBLE,
-  INDEX `order_status_index` (`status` ASC) VISIBLE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS `store`.`order`
+(
+    `id`       INT(11)     NOT NULL AUTO_INCREMENT,
+    `petId`    INT(11)     NULL DEFAULT NULL,
+    `quantity` INT(11)     NULL DEFAULT '0',
+    `shipDate` DATETIME    NULL DEFAULT NULL,
+    `status`   VARCHAR(64) NULL DEFAULT NULL,
+    `complete` TINYINT(1)  NULL DEFAULT '0',
+    PRIMARY KEY (`id`),
+    INDEX `order_id_index` (`id` ASC) VISIBLE,
+    INDEX `order_status_index` (`status` ASC) VISIBLE
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
-USE `user` ;
+USE `user`;
 
 -- -----------------------------------------------------
 -- Table `user`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `user`.`user` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(128) NOT NULL,
-  `firstName` VARCHAR(128) NOT NULL,
-  `lastName` VARCHAR(128) NOT NULL,
-  `email` VARCHAR(255) NOT NULL,
-  `password` VARCHAR(255) NOT NULL,
-  `phone` VARCHAR(64) CHARACTER SET 'utf8' NULL DEFAULT NULL,
-  `userStatus` INT(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `user_name_index` (`username` ASC) VISIBLE,
-  INDEX `email_index` (`email` ASC) VISIBLE,
-  INDEX `user_id_index` (`id` ASC) VISIBLE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS `user`.`user`
+(
+    `id`         INT(11)                          NOT NULL AUTO_INCREMENT,
+    `username`   VARCHAR(128)                     NOT NULL,
+    `firstName`  VARCHAR(128)                     NOT NULL,
+    `lastName`   VARCHAR(128)                     NOT NULL,
+    `email`      VARCHAR(255)                     NOT NULL,
+    `password`   VARCHAR(255)                     NOT NULL,
+    `token`      VARCHAR(1024)                    NULL,
+    `phone`      VARCHAR(64) CHARACTER SET 'utf8' NULL DEFAULT NULL,
+    `userStatus` INT(11)                          NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `user_name_index` (`username` ASC) VISIBLE,
+    INDEX `email_index` (`email` ASC) VISIBLE,
+    INDEX `user_id_index` (`id` ASC) VISIBLE
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
+
+INSERT INTO `user`.`user`
+    (username, firstName, lastName, email, password, phone, userStatus, token)
+    VALUES
+           ('admin', 'Admin', 'User', 'admin@petstore.io', 'admin', '0731234567', 1, null),
+           ('jbloggs68', 'Customer', 'Example', 'joe@gmail.com', 'mittens', '0412345678', 1, null);
+
+INSERT INTO `pet`.`categories` (`name`)
+VALUES ('Bird'),
+       ('Cat'),
+       ('Dog'),
+       ('Fish'),
+       ('Guinea Pig');
+INSERT INTO `pet`.`tags` (`name`)
+VALUES ('Canary'),
+       ('Finch'),
+       ('Domestic Shorthair'),
+       ('Tonkinese'),
+       ('Bull Terrier'),
+       ('Mastiff'),
+       ('Tetra'),
+       ('Goldfish'),
+       ('Long Hair'),
+       ('Short Hair');
+INSERT INTO `pet`.`pets` (`categoryId`, `status`, `name`)
+VALUES (3, 'pending', 'Harlan'),
+       (4, 'pending', 'Astra'),
+       (1, 'available', 'Kennedy'),
+       (4, 'pending', 'Beverly'),
+       (1, 'available', 'Hayes'),
+       (1, 'pending', 'Gail'),
+       (3, 'pending', 'Scarlett'),
+       (1, 'pending', 'Erica'),
+       (4, 'available', 'Shafira'),
+       (1, 'sold', 'Avye');
+INSERT INTO `pet`.`pets` (`categoryId`, `status`, `name`)
+VALUES (1, 'pending', 'Tana'),
+       (4, 'available', 'Blake'),
+       (2, 'sold', 'Yuli'),
+       (3, 'sold', 'Zeus'),
+       (1, 'pending', 'Cyrus'),
+       (2, 'sold', 'Barbara'),
+       (3, 'sold', 'Jada'),
+       (4, 'pending', 'Alden'),
+       (3, 'pending', 'Christen'),
+       (4, 'available', 'Doris');
+INSERT INTO `pet`.`pets` (`categoryId`, `status`, `name`)
+VALUES (3, 'sold', 'Sasha'),
+       (3, 'sold', 'Eric'),
+       (2, 'available', 'Tate'),
+       (4, 'available', 'Nelle'),
+       (3, 'sold', 'Dane'),
+       (1, 'available', 'Axel'),
+       (4, 'pending', 'Joy'),
+       (3, 'pending', 'Rajah'),
+       (4, 'sold', 'Dean'),
+       (2, 'pending', 'Dieter');
+INSERT INTO `pet`.`pets` (`categoryId`, `status`, `name`)
+VALUES (2, 'pending', 'Sean'),
+       (1, 'pending', 'Tallulah'),
+       (3, 'sold', 'April'),
+       (1, 'available', 'Hayley'),
+       (2, 'pending', 'Chancellor'),
+       (4, 'sold', 'Madonna'),
+       (2, 'available', 'Nicholas'),
+       (3, 'sold', 'Mason'),
+       (4, 'sold', 'Samson'),
+       (1, 'available', 'Oleg');
+
+-- Insert orders based on statuses in generated pet data
+INSERT INTO store.`order`
+SELECT null    AS id,
+       id      AS petId,
+       1       AS quantity,
+       CASE
+           WHEN status = 'sold' THEN FROM_UNIXTIME(
+                   UNIX_TIMESTAMP('2019-08-30 14:53:27') + FLOOR(0 + (RAND() * 2629743))
+               )
+           END AS shipDate,
+       CASE
+           WHEN status = 'pending' THEN 'placed'
+           WHEN status = 'sold' THEN 'approved'
+           END AS status,
+       CASE
+           WHEN status = 'delivered' THEN true
+           ELSE false
+           END AS complete
+FROM pet.pets p
+WHERE status <> 'available';
+
+-- update some of our order fixtures to delivered.
+UPDATE store.`order`
+SET status   = 'delivered',
+    complete = true
+WHERE shipDate IS NOT NULL
+ORDER BY RAND()
+LIMIT 6;
 
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+SET SQL_MODE = @OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS;
+

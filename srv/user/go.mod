@@ -1,4 +1,4 @@
-module github.com/deanstalker/jtechchallenge/srv/pet
+module github.com/deanstalker/jtechchallenge/srv/user
 
 go 1.13
 

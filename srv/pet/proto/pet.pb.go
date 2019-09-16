@@ -34,35 +34,16 @@ import proto "github.com/golang/protobuf/proto"
 var _ = proto.Marshal
 
 type AddRequest struct {
-	Id        int64       `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
-	Name      string      `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`
-	Status    string      `protobuf:"bytes,3,opt,name=status" json:"status,omitempty"`
-	Category  *Category   `protobuf:"bytes,4,opt,name=category" json:"category,omitempty"`
-	Tags      []*Tag      `protobuf:"bytes,5,rep,name=tags" json:"tags,omitempty"`
-	PhotoUrls []*PhotoURL `protobuf:"bytes,6,rep,name=photo_urls" json:"photo_urls,omitempty"`
+	Pet *Pet `protobuf:"bytes,1,opt,name=pet" json:"pet,omitempty"`
 }
 
 func (m *AddRequest) Reset()         { *m = AddRequest{} }
 func (m *AddRequest) String() string { return proto.CompactTextString(m) }
 func (*AddRequest) ProtoMessage()    {}
 
-func (m *AddRequest) GetCategory() *Category {
+func (m *AddRequest) GetPet() *Pet {
 	if m != nil {
-		return m.Category
-	}
-	return nil
-}
-
-func (m *AddRequest) GetTags() []*Tag {
-	if m != nil {
-		return m.Tags
-	}
-	return nil
-}
-
-func (m *AddRequest) GetPhotoUrls() []*PhotoURL {
-	if m != nil {
-		return m.PhotoUrls
+		return m.Pet
 	}
 	return nil
 }
@@ -75,35 +56,16 @@ func (m *AddResponse) String() string { return proto.CompactTextString(m) }
 func (*AddResponse) ProtoMessage()    {}
 
 type UpdateRequest struct {
-	Id        int64       `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
-	Name      string      `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`
-	Status    string      `protobuf:"bytes,3,opt,name=status" json:"status,omitempty"`
-	Category  *Category   `protobuf:"bytes,4,opt,name=category" json:"category,omitempty"`
-	Tags      []*Tag      `protobuf:"bytes,5,rep,name=tags" json:"tags,omitempty"`
-	PhotoUrls []*PhotoURL `protobuf:"bytes,6,rep,name=photo_urls" json:"photo_urls,omitempty"`
+	Pet *Pet `protobuf:"bytes,1,opt,name=pet" json:"pet,omitempty"`
 }
 
 func (m *UpdateRequest) Reset()         { *m = UpdateRequest{} }
 func (m *UpdateRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateRequest) ProtoMessage()    {}
 
-func (m *UpdateRequest) GetCategory() *Category {
+func (m *UpdateRequest) GetPet() *Pet {
 	if m != nil {
-		return m.Category
-	}
-	return nil
-}
-
-func (m *UpdateRequest) GetTags() []*Tag {
-	if m != nil {
-		return m.Tags
-	}
-	return nil
-}
-
-func (m *UpdateRequest) GetPhotoUrls() []*PhotoURL {
-	if m != nil {
-		return m.PhotoUrls
+		return m.Pet
 	}
 	return nil
 }
@@ -147,35 +109,16 @@ func (m *ByIDRequest) String() string { return proto.CompactTextString(m) }
 func (*ByIDRequest) ProtoMessage()    {}
 
 type ByIDResponse struct {
-	Id        int64       `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
-	Name      string      `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`
-	Status    string      `protobuf:"bytes,3,opt,name=status" json:"status,omitempty"`
-	Category  *Category   `protobuf:"bytes,4,opt,name=category" json:"category,omitempty"`
-	Tags      []*Tag      `protobuf:"bytes,5,rep,name=tags" json:"tags,omitempty"`
-	PhotoUrls []*PhotoURL `protobuf:"bytes,6,rep,name=photo_urls" json:"photo_urls,omitempty"`
+	Pet *Pet `protobuf:"bytes,1,opt,name=pet" json:"pet,omitempty"`
 }
 
 func (m *ByIDResponse) Reset()         { *m = ByIDResponse{} }
 func (m *ByIDResponse) String() string { return proto.CompactTextString(m) }
 func (*ByIDResponse) ProtoMessage()    {}
 
-func (m *ByIDResponse) GetCategory() *Category {
+func (m *ByIDResponse) GetPet() *Pet {
 	if m != nil {
-		return m.Category
-	}
-	return nil
-}
-
-func (m *ByIDResponse) GetTags() []*Tag {
-	if m != nil {
-		return m.Tags
-	}
-	return nil
-}
-
-func (m *ByIDResponse) GetPhotoUrls() []*PhotoURL {
-	if m != nil {
-		return m.PhotoUrls
+		return m.Pet
 	}
 	return nil
 }

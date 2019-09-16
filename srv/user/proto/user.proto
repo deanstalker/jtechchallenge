@@ -3,44 +3,27 @@ syntax = "proto3";
 package user;
 
 service User {
-    rpc Create(UserRequest) returns (UserResponse) {}
-    rpc Login(LoginRequest) returns (LoginResponse) {}
-    rpc Logout(LogoutRequest) returns (LogoutResponse) {}
+    rpc Create(CreateRequest) returns (CreateResponse) {}
     rpc Get(GetRequest) returns (GetResponse) {}
     rpc Update(UpdateRequest) returns (UpdateResponse) {}
     rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+    rpc BatchCreate(BatchCreateRequest) returns (BatchCreateResponse) {}
 }
 
-message UserRequest {
-    int64 id = 1;
-    string username = 2;
-    string first_name = 3;
-    string last_name = 4;
-    string email = 5;
-    bytes password = 6;
-    string phone = 7;
-    int64 userStatus = 8;
+message CreateRequest {
+    UserItem user = 1;
 }
 
-message UserResponse {
-    // empty
+message CreateResponse {
+    bool success = 1;
 }
 
-message LoginRequest {
-    string username = 1;
-    string password = 2;
+message BatchCreateRequest {
+    repeated UserItem users = 1;
 }
 
-message LoginResponse {
-    string success = 1;
-}
-
-message LogoutRequest {
-    // empty
-}
-
-message LogoutResponse {
-    // empty
+message BatchCreateResponse {
+    bool success = 1;
 }
 
 message GetRequest {
@@ -48,17 +31,26 @@ message GetRequest {
 }
 
 message GetResponse {
-    int64 id = 1;
-    string username = 2;
-    string first_name = 3;
-    string last_name = 4;
-    string email = 5;
-    bytes password = 6;
-    string phone = 7;
-    int64 userStatus = 8;
+    UserItem user = 1;
 }
 
 message UpdateRequest {
+    UserItem user = 1;
+}
+
+message UpdateResponse {
+    bool success = 1;
+}
+
+message DeleteRequest {
+    string username = 1;
+}
+
+message DeleteResponse {
+    bool success = 1;
+}
+
+message UserItem {
     int64 id = 1;
     string username = 2;
     string first_name = 3;
@@ -67,16 +59,4 @@ message UpdateRequest {
     bytes password = 6;
     string phone = 7;
     int64 userStatus = 8;
-}
-
-message UpdateResponse {
-    // empty
-}
-
-message DeleteRequest {
-    int64 id = 1;
-}
-
-message DeleteResponse {
-    // empty
 }
