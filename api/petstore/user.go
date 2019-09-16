@@ -2,34 +2,35 @@ package main
 
 import (
 	"context"
+	"net/http"
+	"os"
+	"strings"
+
 	user "github.com/deanstalker/jtechchallenge/srv/user/proto"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/emicklei/go-restful"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/net/trace"
-	"net/http"
-	"os"
-	"strings"
 )
 
 type UserREST struct {
 	ctx context.Context
-	wc *restful.Container
+	wc  *restful.Container
 	log logrus.FieldLogger
 
 	client user.UserService
 }
 
 type Token struct {
-	UserID int64
+	UserID   int64
 	Username string
 	jwt.StandardClaims
 }
 
 func NewUserREST(ctx context.Context, log logrus.FieldLogger, client user.UserService) *UserREST {
 	return &UserREST{
-		ctx: ctx,
-		log: log.WithField("component", "user-rest"),
+		ctx:    ctx,
+		log:    log.WithField("component", "user-rest"),
 		client: client,
 	}
 }
@@ -81,7 +82,7 @@ func (r *UserREST) batchCreate(req *restful.Request, rsp *restful.Response) {
 	}
 
 	_, err := r.client.BatchCreate(ctx, &user.BatchCreateRequest{
-		User:users,
+		Users: users,
 	})
 	if err != nil {
 		_ = rsp.WriteErrorString(http.StatusBadRequest, err.Error())
@@ -122,10 +123,10 @@ func (r *UserREST) login(req *restful.Request, rsp *restful.Response) {
 	tokenString, _ := token.SignedString([]byte(os.Getenv("SECRET")))
 
 	if err = rsp.WriteEntity(map[string]string{
-		"id": string(u.User.Id),
+		"id":       string(u.User.Id),
 		"username": u.User.Username,
-		"email": u.User.Email,
-		"token": tokenString,
+		"email":    u.User.Email,
+		"token":    tokenString,
 	}); err != nil {
 		_ = rsp.WriteErrorString(http.StatusForbidden, "Access denied")
 		return
@@ -166,7 +167,6 @@ func jwtAuthentication(req *restful.Request, rsp *restful.Response, chain *restf
 func (r *UserREST) logout(req *restful.Request, rsp *restful.Response) {
 	tr := trace.New("api.v1", "User.Logout")
 	defer tr.Finish()
-
 
 }
 
