@@ -2,15 +2,29 @@ version: '3.3'
 
 services:
   consul:
-    command: -server -bootstrap -rejoin
-    image: progrium/consul:latest
+    image: consul:latest
+    environment:
+      CONSUL_BIND_INTERFACE: 'eth0'
     ports:
       - "8300:8300"
       - "8400:8400"
       - "8500:8500"
       - "8600:53/udp"
+
+  consul-agent:
+    image: consul:latest
+    environment:
+      CONSUL_BIND_INTERFACE: 'eth0'
+    command: "agent -dev -join=consul"
+
+  consul-agent-1:
+    image: consul:latest
+    environment:
+      CONSUL_BIND_INTERFACE: 'eth0'
+    command: "agent -dev -join=consul"
+
   micro:
-    command: --registry_address=consul:8500 api --handler=rpc
+    command: --registry_address=consul:8500 api --handler=proxy
     image: microhq/micro:latest
     links:
       - consul
@@ -21,6 +35,7 @@ services:
     build: ./api/petstore
     command: --registry_address=consul:8500
     environment:
+      GOSUMDB: 'off'
       SECRET: 'purple monkey dishwasher'
     links:
       - consul
@@ -31,10 +46,11 @@ services:
     build: ./srv/user
     command: --registry_address=consul:8500
     environment:
-      DB_USER: 'user'
-      DB_PASSWORD: 'kl3pt0man1a'
-      DB_HOST: 'mysql'
-      DB_PORT: '3308'
+      GOSUMDB: 'off'
+      DB_USER: 'root'
+      DB_PASSWORD: 'w31lh3313d'
+      DB_HOST: 'db'
+      DB_PORT: '3306'
       DB_NAME: 'user'
     links:
       - consul
@@ -43,10 +59,11 @@ services:
     build: ./srv/store
     command: --registry_address=consul:8500
     environment:
-      DB_USER: 'user'
-      DB_PASSWORD: 'kl3pt0man1a'
-      DB_HOST: 'mysql'
-      DB_PORT: '3308'
+      GOSUMDB: 'off'
+      DB_USER: 'root'
+      DB_PASSWORD: 'w31lh3313d'
+      DB_HOST: 'db'
+      DB_PORT: '3306'
       DB_NAME: 'store'
     links:
       - consul
@@ -55,15 +72,15 @@ services:
     build: ./srv/pet
     command: --registry_address=consul:8500
     environment:
-        DB_USER: 'user'
-        DB_PASSWORD: 'kl3pt0man1a'
-        DB_HOST: 'mysql'
-        DB_PORT: '3308'
-        DB_NAME: 'pets'
+      GOSUMDB: 'off'
+      DB_USER: 'root'
+      DB_PASSWORD: 'w31lh3313d'
+      DB_HOST: 'db'
+      DB_PORT: '3306'
+      DB_NAME: 'pet'
     links:
       - consul
       - db
-
   db:
     image: mysql
     restart: always
@@ -76,6 +93,11 @@ services:
     expose:
       - '3308'
     volumes:
-      - petstore:/var/lib/mysql
+      - ./data/db:/var/lib/mysql
+      - ./tools/migrate-db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 volumes:
   petstore:
