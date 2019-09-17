@@ -122,8 +122,8 @@ func (r *UserREST) login(req *restful.Request, rsp *restful.Response) {
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 	tokenString, _ := token.SignedString([]byte(os.Getenv("SECRET")))
 
-	if err = rsp.WriteEntity(map[string]string{
-		"id":       string(u.User.Id),
+	if err = rsp.WriteEntity(map[string]interface{}{
+		"id":       int(u.User.Id),
 		"username": u.User.Username,
 		"email":    u.User.Email,
 		"token":    tokenString,

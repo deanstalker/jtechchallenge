@@ -145,6 +145,7 @@ type UserItem struct {
 	Password   []byte `protobuf:"bytes,6,opt,name=password,proto3" json:"password,omitempty"`
 	Phone      string `protobuf:"bytes,7,opt,name=phone" json:"phone,omitempty"`
 	UserStatus int64  `protobuf:"varint,8,opt,name=userStatus" json:"userStatus,omitempty"`
+	Token      string `protobuf:"bytes,9,opt,name=token" json:"token,omitempty"`
 }
 
 func (m *UserItem) Reset()         { *m = UserItem{} }

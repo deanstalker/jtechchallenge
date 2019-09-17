@@ -3,8 +3,9 @@ package db
 import (
 	"database/sql"
 	"errors"
-	user "github.com/deanstalker/jtechchallenge/srv/user/proto"
 	"strings"
+
+	user "github.com/deanstalker/jtechchallenge/srv/user/proto"
 )
 
 type UserRepo interface {
@@ -44,7 +45,7 @@ func (r *DefaultUserRepo) BatchCreate(users []*user.UserItem) (int64, error) {
 	}
 	defer stmt.Close()
 
-	params := make([]interface{}, len(users) * 7)
+	params := make([]interface{}, len(users)*7)
 	for _, u := range users {
 		paramSet := make([]interface{}, 7)
 		paramSet[0] = u.Username
@@ -112,9 +113,25 @@ func (r *DefaultUserRepo) ByUsername(username string) (*user.UserItem, error) {
 
 	row := stmt.QueryRow(username)
 
+	var token sql.NullString
+
 	u := &user.UserItem{}
-	if err = row.Scan(u); err != nil {
+	if err = row.Scan(
+		&u.Id,
+		&u.Username,
+		&u.FirstName,
+		&u.LastName,
+		&u.Email,
+		&u.Password,
+		&u.Phone,
+		&u.UserStatus,
+		&token,
+	); err != nil {
 		return nil, err
+	}
+
+	if token.Valid {
+		u.Token = token.String
 	}
 
 	return u, nil
@@ -143,5 +160,3 @@ func (r *DefaultUserRepo) Update(user *user.UserItem) error {
 
 	return nil
 }
-
-

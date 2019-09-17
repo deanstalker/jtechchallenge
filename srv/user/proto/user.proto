@@ -59,4 +59,5 @@ message UserItem {
     bytes password = 6;
     string phone = 7;
     int64 userStatus = 8;
+    string token = 9;
 }
